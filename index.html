@@ -1,0 +1,911 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Countries Data</title>
+    <!-- <link rel="stylesheet" href="css/style.css" /> -->
+    <style>
+      *{
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+.container{
+    width: 100%;
+    height: 100vh;
+    /* border: 1px solid black; */
+}
+.cards{
+    display: flex;
+    flex-wrap: wrap;
+    justify-content:center;
+    padding-top: 40px;
+    margin-top: 120px;
+}
+.card{
+    width: 270px;
+    /* border: 1px solid red; */
+    padding: 20px 10px;
+    border-radius:20px ;
+    box-shadow:2px 2px #888888;
+    margin: 30px;
+    border: 1px solid #888888;
+    cursor: pointer;
+    background-color: white;
+}
+.card:hover{
+    border: 1px solid black;
+    box-shadow:2px 2px black;
+
+}
+.image img{
+    width: 90%;
+    height: 120px;
+    /* border: 1px solid black; */
+    margin: auto;
+    margin-left: 10px;
+}
+.details{
+    width: 90%;
+    /* border: 1px solid blue; */
+    margin: auto;
+}
+.population,.region,.capital{
+    display: flex;
+}
+.navbar{
+    display: flex;
+    justify-content: space-between;
+    height: 50px;
+    background-color: #888888;
+    color: white;
+    padding: 15px;
+}
+.search{
+    width: 100%;
+    /* border: 1px solid red; */
+    height: 70px;
+    padding: 20px;
+    display: flex;
+    justify-content: space-between;
+}
+.searchregion,.searchCountry{
+    box-shadow: 2px 2px #888888;
+    border-radius:10px;
+    height: 40px;
+    padding: 10px;
+}
+.searchregion{
+    cursor: pointer;
+}
+.header{
+    top: 0;
+    position: fixed;
+    width: 100%;
+    background-color: white;
+}
+/* .cards,.header{
+    display: none;
+} */
+.carddetails{
+    width: 50%;
+    margin: auto;
+    margin-top: 100px;
+    display: flex;
+    border: 1px solid #888888;
+    box-shadow: 2px 2px #888888;
+    padding: 30px;
+    border-radius: 20px;
+    background-color: white;
+    color: black;
+    /* text-align: center; */
+}
+.part1,.part2{
+    width: 50%;
+    /* border: 1px solid red; */
+}
+.pop{
+    display: flex;
+}
+.countryImage img{
+    width: 70%;
+    margin: auto;
+    margin-top: 50px;
+    /* border: 1px solid grey; */
+    /* box-shadow: 2px 2px #888888; */
+    height: 150px;
+    /* border: 1px solid yellow; */
+}
+.alldetails{
+    display: none;
+}
+.header,.cards{
+    /* display: none; */
+}
+.borders{
+    display: flex;
+    /* border: 1px solid black; */
+    justify-content: right;
+    flex-wrap: wrap;
+}
+.borders p{
+    padding: 5px;
+    /* border: 1px solid red; */
+    border-radius:10px ;
+    background-color: grey;
+    color: white;
+}
+.border{
+    cursor: pointer;
+}
+.backbtn{
+    height: 40px;
+    border-radius: 10px;
+    background-color: black;
+    color: white;
+    padding: 10px;
+    /* display: none; */
+    position: absolute;
+    top: -25%;
+    left: 1%;
+    cursor: pointer;
+}
+.showalldetails{
+    position: relative;
+}
+.timezone{
+    /* border: 1px solid red; */
+    /* display: flex; */
+}
+.tz{
+    width: 100%;
+    border: 1px solid black;
+    display: flex;
+    flex-wrap: wrap;
+}
+.filter{
+    width: 100px;
+    border: 1px solid black;
+    height: 30px;
+    background-color: grey;
+    color: white;
+}
+.filters{
+    /* border: 1px solid red; */
+    margin-top: 42px;
+    margin-right: 16px;
+    display: none;
+    cursor: pointer;
+}
+.searchregion{
+    /* border: 1px solid red; */
+    position: absolute;
+    right: 2%;
+    width: 120px;
+    text-align: center;
+}
+.bright,.dark{
+    cursor: pointer;
+}
+.bright{
+    display: none;
+}
+img{
+    /* border: 1px solid #888888; */
+    box-shadow: 2px 2px #888888;
+}
+    </style>
+  </head>
+  <body>
+    <div class="container">
+      <div class="header">
+        <div class="navbar">
+          <p>Where in the World</p>
+          <p class="dark">Dark Mode</p>
+          <p class="bright">Bright Mode</p>
+        </div>
+        <div class="search">
+          <input
+            id="searchbyCountry"
+            class="searchCountry"
+            type="text"
+            placeholder="Search Country"
+          />
+          <div id="regionfilter" class="searchregion">All Continents</div>
+          <div id="fil" class="filters">
+            <div class="filter" onclick="allcontinents()" value="asia">
+              All Continents
+            </div>
+            <div class="filter" onclick="asia()" value="asia">Asia</div>
+            <div class="filter" onclick="northamerica()" id="northamerica">
+              North America
+            </div>
+            <div class="filter" onclick="southamerica()" id="southamerica">
+              South America
+            </div>
+            <div class="filter" onclick="africa()" id="africa">Africa</div>
+            <div class="filter" onclick="antarctica()" id="antactica">
+              Antactica
+            </div>
+            <div class="filter" onclick="europe()" id="europe">Europe</div>
+            <div class="filter" onclick="oceania()" id="oceania">Oceania</div>
+          </div>
+        </div>
+      </div>
+      <div class="cards"></div>
+
+      <div class="showalldetails">
+        <!-- <button onClick="backbtn()" class="backbtn">Back To Home</button> -->
+        <div class="alldetails"></div>
+      </div>
+    </div>
+    <!-- <script src="js/index.js"></script> -->
+    <script>
+      let cards = document.querySelector(".cards");
+
+let header = document.querySelector(".header");
+let container = document.querySelector(".container");
+let alldetails = document.querySelector(".alldetails");
+let regionfilter = document.querySelector("#regionfilter");
+let fil = document.querySelector("#fil");
+let filters = document.querySelector(".filters");
+let searchregion = document.querySelector(".searchregion");
+let dark = document.querySelector(".dark");
+let bright = document.querySelector(".bright");
+let navbar = document.querySelector(".navbar");
+let search = document.querySelector(".search");
+let carddetails=document.querySelector('.carddetails');
+
+let details = `<div class="carddetails">
+    <div class="part1">
+        <div class="countryImage">
+            <img src="" alt="Image">
+        </div>
+    </div>
+    <div class="part2">
+        <h2>India</h2><br>
+        <div class="pop">
+            <p><b>Population :</b></p>
+            <p> 4564567</p>
+        </div><br>
+        <p>Kabul</p> 
+        <p>Afgan Afgani</p>
+        <p>Rhino, doremon,pokemon</p> <br>
+        <div class="subregion">
+            <p><b>subregion :</b></p>
+            <p> 2345678</p>
+        </div><br>
+        <div class="timezone">
+            <p><b>Time-Zone :</b></p>
+            <p> 2345678</p>
+        </div>
+        <div class="borders">
+        </div>
+    </div>
+  </div>`;
+function getdata() {
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      // console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        let card = `
+        
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+        cards.innerHTML += card;
+      }
+    });
+}
+function cardclicked(id) {
+  console.log("cardclicked");
+  // console.log(details);
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      //   console.log(response);
+      // a+=response.json();
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      for (let i = 0; i < data.length; i++) {
+        if (i == id) {
+          let lang = [];
+          for (const [key, value] of Object.entries(data[i].languages)) {
+            console.log(`${key}: ${value}`);
+            lang.push(key, value);
+          }
+          console.log(Object.keys(data[i].languages).length);
+          console.log(lang);
+          let details = `
+          
+          <div class="carddetails">
+    <div class="part1">
+        <div class="countryImage">
+            <img src="${data[i].flags.png}" alt="Image">
+        </div>
+    </div>
+    <div class="part2">
+        <h2>${data[i].name.common}</h2><br>
+        <div class="pop">
+            <p><b>Population :</b></p>
+            <p> ${data[i].population}</p>
+        </div><br>
+        <p>${data[i].capital}</p> 
+        <p>Afgan Afgani</p>
+         <div class='lan'></div><br>
+        <div class="subregion">
+            <p><b>subregion :</b></p>
+            <p> ${data[i].subregion}</p>
+        </div><br>
+        <div class="timezone">
+            <p><b>Time-Zone :</b></p>
+            <p> ${data[i].timezones[0]}</p>
+        </div>
+        <div class="borders">
+        </div>
+        <button onClick="backbtn()" class="backbtn">Back To Home</button>
+    </div>
+  </div>`;
+
+          header.style.display = "none";
+          cards.style.display = "none";
+          alldetails.innerHTML += "";
+          alldetails.innerHTML = details;
+          alldetails.style.display = "block";
+          let bordercountries = data[id].borders;
+          console.log(bordercountries);
+          let borderclass = document.querySelector(".borders");
+          for (let j = 0; j < bordercountries.length; j++) {
+            let bor = `<p id='border${i}${j}' onClick='showneighbourdetails(border${i}${j})' class="border">${data[id].borders[j]}</p>`;
+            borderclass.innerHTML += bor;
+          }
+          let lan = document.querySelector(".lan");
+          for (let i = 0; i < lang.length; i++) {
+            if (i % 2 != 0) {
+              lan.innerHTML += lang[i] + " ";
+            }
+          }
+          container.style.padding='30px';
+          // console.log(data[i].cioc);
+
+          break;
+        }
+      }
+    });
+}
+getdata();
+
+function backbtn() {
+  header.style.display = "block";
+  cards.style.display = "flex";
+  alldetails.style.display = "none";
+  container.style.padding='0';
+}
+function showneighbourdetails(a) {
+  let b = a.innerHTML;
+  console.log(b);
+  // let cio=document.getElementById('').innerHTML;
+  // console.log(cio);
+  url = "https://restcountries.com/v3.1/all";
+  fetch(url)
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => {
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].cioc == b) {
+          console.log(`The neighbour nation is ${data[i].name.common}`);
+          let details = `
+          
+          <div class="carddetails">
+    <div class="part1">
+        <div class="countryImage">
+            <img src="${data[i].flags.png}" alt="Image">
+        </div>
+    </div>
+    <div class="part2">
+        <h2>${data[i].name.common}</h2><br>
+        <div class="pop">
+            <p><b>Population :</b></p>
+            <p> ${data[i].population}</p>
+        </div><br>
+        <p>${data[i].capital}</p> 
+        <p>Afgan Afgani</p>
+        <p>English</p> <br>
+        <div class="subregion">
+            <p><b>subregion :</b></p>
+            <p> ${data[i].subregion}</p>
+        </div><br>
+        <div class="timezone">
+            <p><b>Time-Zone :</b></p>
+            <p> ${data[i].timezones[0]}</p>
+        </div>
+        <div class="borders">
+        </div>
+        <button onClick="backbtn()" class="backbtn">Back To Home</button>
+    </div>
+  </div>`;
+          header.style.display = "none";
+          cards.style.display = "none";
+          alldetails.innerHTML += "";
+          alldetails.innerHTML = details;
+          alldetails.style.display = "block";
+          let bordercountries = data[i].borders;
+          console.log(bordercountries);
+          let borderclass = document.querySelector(".borders");
+          for (let j = 0; j < bordercountries.length; j++) {
+            let bor = `<p id='border${i}${j}' onClick='showneighbourdetails(border${i}${j})' class="border">${data[i].borders[j]}</p>`;
+            borderclass.innerHTML += bor;
+          }
+          break;
+        }
+      }
+    });
+}
+
+function asia() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "Asia";
+  console.log("asia");
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].continents[0] == "Asia") {
+          let card = `
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+}
+function northamerica() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "North America";
+  console.log("asia");
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].continents[0] == "North America") {
+          let card = `
+
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+}
+function southamerica() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "South America";
+  console.log("asia");
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].continents[0] == "South America") {
+          let card = `
+
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+}
+function africa() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "Africa";
+  console.log("asia");
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].continents[0] == "Africa") {
+          let card = `
+
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+}
+function europe() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "Europe";
+  console.log("asia");
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].continents[0] == "Europe") {
+          let card = `
+
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+}
+
+function antarctica() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "Antarctica";
+  console.log("asia");
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].continents[0] == "Antarctica") {
+          let card = `
+
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+}
+function oceania() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "Oceania";
+  console.log("oceania");
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      console.log(data);
+      for (let i = 0; i < data.length; i++) {
+        if (data[i].continents[0] == "Oceania") {
+          let card = `
+
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+}
+
+function allcontinents() {
+  cards.innerHTML = "";
+  fil.style.display = "none";
+  regionfilter.innerHTML = "All Continents";
+  getdata();
+}
+
+regionfilter.addEventListener("click", () => {
+  fil.style.display = "block";
+});
+
+let searchCountry = document.querySelector(".searchCountry");
+searchCountry.addEventListener("input", (e) => {
+  cards.innerHTML = "";
+  let b = e.target.value.toLowerCase();
+  if (b == "") {
+    getdata();
+  }
+  console.log(b);
+  url = "https://restcountries.com/v3.1/all";
+  // url="https://api.github.com/users";
+  fetch(url)
+    .then((response) => {
+      console.log(response);
+      //   console.log(response);
+      return response.json();
+    })
+    .then((array) => {
+      let data = array.sort((a, b) => {
+        if (a.name.common < b.name.common) return -1;
+        if (a.name.common > b.name.common) return 1;
+        return 0;
+      });
+      for (let i = 0; i < data.length; i++) {
+        let arrayString = data[i].name.common.toLowerCase();
+        if (arrayString.includes(b)) {
+          let card = `
+
+        <div onClick='cardclicked(${i})' class="card" id="${i}">
+<div class="image">
+  <img src="${data[i].flags.png}" alt="flag_Image" />
+</div>
+<div class="details">
+  <div class="name">${data[i].name.common}</div>
+  <div class="population">
+    <p>population :</p>
+    <p>${data[i].population}</p>
+  </div>
+  <div class="region">
+    <p>Region :</p>
+    <p>${data[i].region}</p>
+  </div>
+  <div class="capital">
+    <p>Capital :</p>
+    <p>${data[i].capital}</p>
+  </div>
+</div>`;
+          cards.innerHTML += card;
+        }
+      }
+    });
+});
+
+dark.addEventListener("click", () => {
+
+  dark.style.display = "none";
+  bright.style.display = "block";
+  search.style.backgroundColor = "#888888";
+  navbar.style.color = "#888888";
+  navbar.style.backgroundColor = "white";
+  filters.style.color = "white";
+  searchregion.style.color = "white";
+  cards.style.backgroundColor = "#888888";
+  container.style.backgroundColor='#888888'
+  console.log(carddetails);
+  // carddetails.style.display.backgroundColor='black';
+});
+bright.addEventListener("click", () => {
+  dark.style.display = "block";
+  bright.style.display = "none";
+  
+  search.style.backgroundColor = "white";
+  navbar.style.color = "white";
+  navbar.style.backgroundColor = "#888888";
+  filters.style.color = "black";
+  searchregion.style.color = "black";
+  cards.style.backgroundColor = "white";
+  container.style.backgroundColor='white'
+});
+
+    </script>
+  </body>
+</html>
